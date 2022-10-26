@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');                //use this bcuz we want to store our data in mongoose
 
-const bookSchema = new mongoose.Schema( {
+const bookSchema = new mongoose.Schema( {            //ek structure/schema bnaya
+
     bookName: String,
     authorName: String,
     category: String,

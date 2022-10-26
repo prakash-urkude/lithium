@@ -4,7 +4,7 @@ const UserModel= require("../models/userModel.js")
 const UserController= require("../controllers/userController")
 
 const BookModel= require("../assign models/bookModel.js")
-const bookController= require("../assign controllers/bookController")
+const BookController= require("../assign controllers/bookController")
 
 router.get("/test-me", function (req, res) {
     res.send("My first ever api!")
