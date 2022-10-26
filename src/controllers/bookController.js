@@ -8,13 +8,25 @@ const createBook= async function (req, res) {
     res.send({msg: savedData})
 }
 
-const getBooksData= async function (req, res) {
-   // let allBooks=await BookModel.find({bookName:"book8", authorName:"jadavaa"})
-   let getBooksInYear=await BookModel.find({year:"2020"})
-   res.send({msg: getBooksInYear})
-}
-   //let allBooks = await BookModel.find({$in:["hinata"]})
+// const getBooksData= async function (req, res) {
+//     let bookList=await BookModel.find({bookName:"book8", authorName:"jadavaa"})
+//     res.send({msg: bookList})
+//  }
 
+// const getBooksData= async function (req, res) {
+//    let getBooksInYear=await BookModel.find({year:"2020"})
+//    res.send({msg: getBooksInYear})
+// }
+
+// const getBooksData= async function (req, res) {
+//     let getParticularBooks = await BookModel.find({$in:["hinata"]})
+//     res.send({msg: getParticularBooks})
+//  }
+ 
+const getBooksData= async function (req, res) {
+    let getXINRBooks=await BookModel.find({bookName:"book8", authorName:"jadavaa"})
+    res.send({msg: getXINRBooks})
+ }
 
     // let allBooks= await BookModel.find( ).count() // COUNT
 
