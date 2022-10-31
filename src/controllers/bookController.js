@@ -1,3 +1,4 @@
+const { isValidObjectId } = require("mongoose")
 const authorModel = require("../models/authorModel")
 const bookModel= require("../models/bookModel")
 const publisherModel= require("../models/publisherModel")
@@ -9,28 +10,32 @@ const createBook= async function (req, res) {
     res.send({data: bookCreated})
 }
 
-// 2.
-const getBooksData= async function (req, res) {
-    let books = await bookModel.find()
-    res.send({data: books})
-}
+// // 2.
+// const getBooksData= async function (req, res) {
+//     let books = await bookModel.find()
+//     res.send({data: books})
+// }
 
-// .3
+// // .3
 
 // const createBook1= async function(req,res){
-//     let {author,publisher}=req.body
-//     if(!author){
-//         res.send("authorId detail is required")
-//     }
+//     let data=req.body
+//     let {author,publisher} = data
 
-//     let authorData=await authorModel.findById({_id:author})       //authorId ko ek  key/variable me daale, then next line me check kr rhe h ki vo authorid   ni h to ye ms bhej do
-//     if(!authorData){
-//         res.send("authorId is not present")
-//     }
+//   if(!author) return res.send({message: "authorId detail is required"})
+//   if(!publisher) return res.send({message: "publisherId detail is required"})
+//   if (!isValidObjectId(author))
+//    return res.send({message: "authorId is not present"})
+  
 
-//     if(!publisher){
-//         res.send("publisherId detail is required")
-//     }
+//   let checkAuthor = await authorModel.findById(data.author) //undefined
+//   if(!isValidObjectId(author))  return res.send({message: "authorId is not a valid obk=jectId"})
+  
+
+
+
+
+
 
 //     let publisherData=await publisherModel.findById({_id:publisher})
 //     if(!publisherData){
@@ -44,21 +49,21 @@ const getBooksData= async function (req, res) {
 
 
 // 4.
-const getBooksWithAuthorAnadPublisherDetails = async function(req,res){
-    let alldatabook = await bookModel.find().populate('publisher').populate('author')
-    res.send({data:alldatabook})
-}
+// const getBooksWithAuthorAnadPublisherDetails = async function(req,res){
+//     let alldatabook = await bookModel.find().populate('publisher').populate('author')
+//     res.send({data:alldatabook})
+// }
 
 
 
-const getBooksWithAuthorDetails = async function (req, res) {
-    let specificBook = await bookModel.find().populate('author_id')
-    res.send({data: specificBook})
+// const getBooksWithAuthorDetails = async function (req, res) {
+//     let specificBook = await bookModel.find().populate('author_id')
+//     res.send({data: specificBook})
 
-}
+// }
 
 module.exports.createBook= createBook
-module.exports.getBooksData= getBooksData
-// module.exports.createBook1= createBook1
-module.exports.getBooksWithAuthorDetails = getBooksWithAuthorDetails
-module.exports.getBooksWithAuthorAnadPublisherDetails= getBooksWithAuthorAnadPublisherDetails
+// module.exports.getBooksData= getBooksData
+// // module.exports.createBook1= createBook1
+// module.exports.getBooksWithAuthorDetails = getBooksWithAuthorDetails
+// module.exports.getBooksWithAuthorAnadPublisherDetails= getBooksWithAuthorAnadPublisherDetails
