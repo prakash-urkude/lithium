@@ -17,24 +17,18 @@ const createBook= async function (req, res) {
 // }
 
 // // .3
-
-// const createBook1= async function(req,res){
-//     let data=req.body
-//     let {author,publisher} = data
-
-//   if(!author) return res.send({message: "authorId detail is required"})
-//   if(!publisher) return res.send({message: "publisherId detail is required"})
-//   if (!isValidObjectId(author))
-//    return res.send({message: "authorId is not present"})
-  
-
-//   let checkAuthor = await authorModel.findById(data.author) //undefined
-//   if(!isValidObjectId(author))  return res.send({message: "authorId is not a valid obk=jectId"})
-  
-
-
-
-
+const createBooks= async function (req, res) {
+    let book = req.body
+    let authorId = book.author
+    let publisherId = book.publishername
+        if (authorId) {
+        if(!publisherId) res.send({msg : "publisher  id is needed" })
+    }
+    else  res.send({msg : " author  id is needed" })
+    
+   let bookCreated = await bookModel.create(book)
+   res.send({msg : bookCreated})
+}
 
 
 //     let publisherData=await publisherModel.findById({_id:publisher})
@@ -48,12 +42,38 @@ const createBook= async function (req, res) {
 
 
 
-// 4.
-// const getBooksWithAuthorAnadPublisherDetails = async function(req,res){
-//     let alldatabook = await bookModel.find().populate('publisher').populate('author')
-//     res.send({data:alldatabook})
-// }
+//4.
+const getBooksWithAuthorAnadPublisherDetails = async function(req,res){
+    let alldatabook = await bookModel.find().populate('publisher').populate('author')
+    res.send({data:alldatabook})
+}
 
+
+// 5.a
+const attribute= async function(req, res){
+    let a=await publisherModel.find({publishername:["Penguin","HarperCollins"]}).select({_id:1});
+    let b=await bookModel.find({publishername:b}).select({_id:1});
+    for (let index = 0; index < b.length; index++) {
+        const element = attribute[index];
+        let newentry=await bookModel.findByIdAndUpdate(element,{$set:{isHardCover:true}})
+
+        console.log(newentry)
+    }
+    res.send("Check the console")
+}
+
+//5.b
+const update=async function(req, res){
+
+    let key = await authorModel.find({ rating:{$gt:3.5}}).select({_id:1});
+    let books=await bookModel.find({author:key}).select({_id:1})
+    for (let index = 0; index < books.length; index++) {
+        const element = books[index];
+        let update= await bookModel.findByIdAndUpdate(element,{$inc:{price:10}}, {new:true})
+        console.log(update)
+    }
+    res.send("Check the console")
+}
 
 
 // const getBooksWithAuthorDetails = async function (req, res) {
@@ -62,8 +82,12 @@ const createBook= async function (req, res) {
 
 // }
 
+
 module.exports.createBook= createBook
+module.exports.createBooks= createBooks
+module.exports.attribute= attribute
+module.exports.update= update
 // module.exports.getBooksData= getBooksData
 // // module.exports.createBook1= createBook1
 // module.exports.getBooksWithAuthorDetails = getBooksWithAuthorDetails
-// module.exports.getBooksWithAuthorAnadPublisherDetails= getBooksWithAuthorAnadPublisherDetails
+ module.exports.getBooksWithAuthorAnadPublisherDetails= getBooksWithAuthorAnadPublisherDetails
