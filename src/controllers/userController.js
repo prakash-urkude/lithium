@@ -36,8 +36,8 @@ const getUsersData= async function (req, res) {
 }
 
 const dummyOne = function (req, res) {
-    if (req.wantsJson) res.send({msg: "ok"})
-    else res.send("ok")
+    if (req.wantsJson) res.send({msg: "yesok"})
+    else res.send("notSoOk")
 }
 
 const dummyTwo = function (req, res) {
