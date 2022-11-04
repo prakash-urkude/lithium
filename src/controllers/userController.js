@@ -3,11 +3,17 @@ const userModel= require("../models/userModel")
 
 // Q2:-
 const createUser= async function (req, res) {
-    let data = req.body
-    let savedData= await userModel.create(data)
-    res.send({msg: savedData})
+    const {name,address,balance,gender,age} = req.body
+    let isFreeAppUser = req.isFreeAppUser
+    isFreeAppUser = isFreeAppUser.toLowerCase() === 'true' ? true : false
+    if(!name || !address || !balance || !gender || !age){
+        return res.send({msg: "name,address,balance,gender,age is mendatory"})
+    }
+    const userData= await userModel.create({name,address,balance,gender,age,isFreeAppUser})
+    res.send({msg: userData})
    
 }
+
 
 
 

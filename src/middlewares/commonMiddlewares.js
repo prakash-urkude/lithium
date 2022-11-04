@@ -42,7 +42,7 @@ const myOtherMiddleware = function(req, res, next){
 
 //Q2
 const midQuestion2 = function(req, res, next){
-    let isFreeAppUserHeaderValue = req.headers.isfreeappuser
+    let isFreeAppUserHeaderValue = req.headers.isfreeappuser          //check kr rhe h ki freeappuser header me h ki nhi, yadi nhi to yahi se hi wapis
 
     if(!isFreeAppUserHeaderValue) {
         return res.send({msg: " the request is missing a mandatory header"})

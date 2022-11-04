@@ -3,6 +3,7 @@ const OrderModel= require("../models/orderModel")
 const ProductModel= require("../models/productModel")
 const UserModel= require("../models/userModel")
 
+//wrong:-
 // const createOrder= async function (req, res) {
 //     let data = req.body
 //     let userid = await data.userId
@@ -18,17 +19,27 @@ const UserModel= require("../models/userModel")
 
 
 const createOrder=async function(req,res){
-    let data= req.body
-    let {userId,productId} = data
-    if(!userId && !productId)return res.send({msg: 'userId & productId is mandatory'})
-    if (!isValidObjectId(userId)){
-        return res.send("valid id is mendatory")
+    const {productId,userId}= req.body
+    const isFreeAppUser = req.isFreeAppUser
+
+    //1st user id and product id aayi h ya nhi
+    if(!productId || !userId){return 
+        res.send({msg: 'userId & productId is mandatory'})
     }
+
+    //jo id aayi user ki vo data base me check kr rhe h ki valid h ki nhi
+    if (!isValidObjectId(userId)){
+        return res.send({msg: "valid userid is mendatory"})
+    }
+
+    //jo id aayi product ki vo data base me check kr rhe h ki valid h ki nhi
     if(!isValidObjectId(productId)){
-        return res.send("valid id is mendatory")
+        return res.send({msg: "valid productid is mendatory"})
         
     }
-    if(userId && productId)
+
+    //
+    
     savedData= await OrderModel.create(data)
     return res.send({data:savedData})
 }
