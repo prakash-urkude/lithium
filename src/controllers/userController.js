@@ -28,15 +28,15 @@ const loginUser = async function (req, res) {
   // The decision about what data to put in token depends on the business requirement
   // Input 2 is the secret
   // The same secret will be used to decode tokens
-  let token = jwt.sign(
+  let token = jwt.sign(                                    //token bna rhe h
     {
-      userId: user._id.toString(),
+      userId: user._id.toString(),                         
       batch: "thorium",
       organisation: "FUnctionUp",
     },
     "functionup-thorium"
   );
-  res.setHeader("x-auth-token", token);
+  res.setHeader("x-auth-token", token);                    //x-auth-token header me likhna h, then username or mail header me dalna h,
   res.send({ status: true, data: token });
 };
 
