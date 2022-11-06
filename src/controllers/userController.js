@@ -1,76 +1,76 @@
-const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");               //token implimented in multiple ways -one way is JSON WebToken, to use JsonWebPackage we use this line-1 library,through this library we are accessing JWT
 const userModel = require("../models/userModel");
 
-const createUser = async function (abcd, xyz) {
-  //You can name the req, res objects anything.
-  //but the first parameter is always the request 
-  //the second parameter is always the response
-  let data = abcd.body;
+/*
+  Read all the comments multiple times to understand why we are doing what we are doing in login api and getUserData api
+*/
+
+// Q.1
+const createUser = async function (req, res) {
+
+  let data = req.body;
   let savedData = await userModel.create(data);
-  console.log(abcd.newAtribute);
-  xyz.send({ msg: savedData });
+  res.send({ msg: savedData });
 };
 
+//Q2.
 const loginUser = async function (req, res) {
-  let userName = req.body.emailId;
+  let email = req.body.emailId;
   let password = req.body.password;
 
-  let user = await userModel.findOne({ emailId: userName, password: password });
+  let user = await userModel.findOne({ emailId: email, password: password });       //user exist krta h ki nhi check kr rhe h,if yes to login kara do and ek token bna ke bhej do responce me
   if (!user)
     return res.send({
       status: false,
-      msg: "username or the password is not corerct",
+      msg: "username or the password is not correct",
     });
 
-  // Once the login is successful, create the jwt token with sign function
-  // Sign function has 2 inputs:
-  // Input 1 is the payload or the object containing data to be set in token
-  // The decision about what data to put in token depends on the business requirement
-  // Input 2 is the secret
-  // The same secret will be used to decode tokens
-  let token = jwt.sign(                                    //token bna rhe h
-    {
-      userId: user._id.toString(),                         
-      batch: "thorium",
-      organisation: "FUnctionUp",
+ 
+  let token = jwt.sign(                                                           //res me token bna ke bhejna h, jwt variable me hamne jsonwebtoken library daali thi jisme se sign function use kr rhe h
+    {                                                                             //jwt ka sign function ka syntex ye bolta h ki imp data store karo, ye data user ko uniquely identify krtaa h
+      userId: user._id.toString(),
+      name: user.firstName +user.lastName ,                                           // string me change kr rhe and other data
+      batch: "lithium",
+      organisation: "FunctionUp",
     },
-    "functionup-thorium"
-  );
-  res.setHeader("x-auth-token", token);                    //x-auth-token header me likhna h, then username or mail header me dalna h,
-  res.send({ status: true, data: token });
+    "this-is-my-secret-key"                                   //secrate(2nd argument):- ye string kisi ke paas nhi hoti ,sirf server ke pas hoti h, jo token bnata h and uuse validate krta h & 3rd argument optional hote h(not mendatory)
+  );                                                                              //to insbke res me hame ek token milega
+  res.setHeader("x-auth-token", token);                                           // res ko header me set kr rhe h,and header ka "nam" bhi de rhe h and uska "token" bhi
+  res.send({ status: true, token: token });                                       // res ko body me set kr rhe h   
 };
+//basically yaha hamne sirf token bnaya h, jo ki next login krte tk is id ke liye saved rhega
 
-const getUserData = async function (req, res) {
-  let token = req.headers["x-Auth-token"];
-  if (!token) token = req.headers["x-auth-token"];
 
-  //If no token is present in the request header return error
-  if (!token) return res.send({ status: false, msg: "token must be present" });
+//Q.3_     here fetching user data 
 
-  console.log(token);
+const getUserData = async function (req, res) {                                   // header re validation karenge ki header me ye token h ki nhi, if to aage wali api me use validate karenge
+  //let token = req.headers["x-auth-token"];
   
-  // If a token is present then decode the token with verify function
-  // verify takes two inputs:
-  // Input 1 is the token to be decoded
-  // Input 2 is the same secret with which the token was generated
-  // Check the value of the decoded token yourself
-  let decodedToken = jwt.verify(token, "functionup-thorium");
-  if (!decodedToken)
-    return res.send({ status: false, msg: "token is invalid" });
+  //If no token is present in the request header return error. This means the user is not logged in.
+  //if (!token) return res.send({ status: false, msg: "token must be present" });
 
-  let userId = req.params.userId;
-  let userDetails = await userModel.findById(userId);
-  if (!userDetails)
-    return res.send({ status: false, msg: "No such user exists" });
+  //console.log(token);
+  
+  // let decodedToken = jwt.verify(token, "this-is-my-secret-key");           // revalidate krne ke liye token and key de rhe h
+  // if (!decodedToken)                                                                         //to previous token(which contains header, payload) and key use krke wapis token bna rhe h and check kr rhe h ki ,dono same h ki nhi
+                                                                                               
+  //   return res.send({ status: false, msg: "token is invalid" });                             //to authentication se check kr rhe h ki valid user to h but valid to h na
+                                                                                               
+  let userId = req.params.userId;                                                               //postman me user/krke user ki id bheje path param me jese bhejte h ,jisse user/:userid wali api hit huii and proces aage badha
+  let userDetails = await userModel.findById({_id:userId});                                           //postman path param me jo id pass kiye the usko yaha store kiye AND find kiye ki essa kuch db me h ki nhi
+  if (!userDetails)                                                                             // db me h to responce bhej diye
+    return res.send({ status: false, msg: "No such user exists" });                             ////iat means issued at .
 
   res.send({ status: true, data: userDetails });
+  // Note: Try to see what happens if we change the secret while decoding the token
 };
+//basically what we did here, that we pass the id from path param and token id from header , and path param se jo id aayi usse db me search kiye us chiz ko, mila to res me de diye,
 
+
+
+// Q.4
 const updateUser = async function (req, res) {
-// Do the same steps here:
-// Check if the token is present
-// Check if the token present is a valid token
-// Return a different error message in both these cases
+ 
 
   let userId = req.params.userId;
   let user = await userModel.findById(userId);
@@ -81,42 +81,26 @@ const updateUser = async function (req, res) {
 
   let userData = req.body;
   let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
-  res.send({ status: updatedUser, data: updatedUser });
+  res.send({ status: "updated", data: updatedUser });
 };
 
-const postMessage = async function (req, res) {
-    let message = req.body.message
-    // Check if the token is present
-    // Check if the token present is a valid token
-    // Return a different error message in both these cases
-    let token = req.headers["x-auth-token"]
-    if(!token) return res.send({status: false, msg: "token must be present in the request header"})
-    let decodedToken = jwt.verify(token, 'functionup-thorium')
+// Q.5
+const deleteUser = async function (req, res) {
+ 
 
-    if(!decodedToken) return res.send({status: false, msg:"token is not valid"})
-    
-    //userId for which the request is made. In this case message to be posted.
-    let userToBeModified = req.params.userId
-    //userId for the logged-in user
-    let userLoggedIn = decodedToken.userId
-
-    //userId comparision to check if the logged-in user is requesting for their own data
-    if(userToBeModified != userLoggedIn) return res.send({status: false, msg: 'User logged is not allowed to modify the requested users data'})
-
-    let user = await userModel.findById(req.params.userId)
-    if(!user) return res.send({status: false, msg: 'No such user exists'})
-    
-    let updatedPosts = user.posts
-    //add the message to user's posts
-    updatedPosts.push(message)
-    let updatedUser = await userModel.findOneAndUpdate({_id: user._id},{posts: updatedPosts}, {new: true})
-
-    //return the updated user document
-    return res.send({status: true, data: updatedUser})
-}
+  let userId = req.params.userId;
+  let user = await userModel.findById(userId);
+  //Return an error if no user with the given id exists in the db
+  if (!user) {
+    return res.send("No such user exists");
+  }
+  let userData = req.body
+  let deletedUser = await userModel.findOneAndDelete({ _id: userId }, userData);
+  res.send({ status: "deleted", data: deletedUser });
+};
 
 module.exports.createUser = createUser;
 module.exports.getUserData = getUserData;
-module.exports.updateUser = updateUser;
 module.exports.loginUser = loginUser;
-module.exports.postMessage = postMessage
+module.exports.updateUser = updateUser;
+module.exports.deleteUser = deleteUser;
