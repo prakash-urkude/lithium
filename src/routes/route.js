@@ -17,8 +17,8 @@ router.get("/test-me", function (req, res) {
 
 router.post("/createBook", bookController.createBook  )
 router.post("/createBooks", bookController.createBooks )
-router.post("/update", bookController.update )
-router.post("/attribute", bookController.attribute )
+router.put("/update", bookController.update )
+router.put("/attribute", bookController.attribute )
 // router.post("/createBook1", bookController.createBook1  )
 
 // router.get("/getBooksData", bookController.getBooksData)

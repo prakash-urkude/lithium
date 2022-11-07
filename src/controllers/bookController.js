@@ -11,16 +11,16 @@ const createBook= async function (req, res) {
 }
 
 // // 2.
-// const getBooksData= async function (req, res) {
-//     let books = await bookModel.find()
-//     res.send({data: books})
-// }
+const getBooksData= async function (req, res) {
+    let books = await bookModel.find()
+    res.send({data: books})
+}
 
 // // .3
 const createBooks= async function (req, res) {
     let book = req.body
     let authorId = book.author
-    let publisherId = book.publishername
+    let publisherId = book.publisher
         if (authorId) {
         if(!publisherId) res.send({msg : "publisher  id is needed" })
     }
@@ -52,14 +52,14 @@ const getBooksWithAuthorAnadPublisherDetails = async function(req,res){
 // 5.a
 const attribute= async function(req, res){
     let a=await publisherModel.find({publishername:["Penguin","HarperCollins"]}).select({_id:1});
-    let b=await bookModel.find({publishername:b}).select({_id:1});
+    let b=await bookModel.find({publishername:a}).select({_id:1});
     for (let index = 0; index < b.length; index++) {
         const element = attribute[index];
-        let newentry=await bookModel.findByIdAndUpdate(element,{$set:{isHardCover:true}})
+        let updatedfile=await bookModel.findByIdAndUpdate(element,{$set:{isHardCover:true}})
 
-        console.log(newentry)
+        console.log(updatedfile)
     }
-    res.send("Check the console")
+    res.send({status:updated,msg:updatedfile})
 }
 
 //5.b
@@ -87,7 +87,7 @@ module.exports.createBook= createBook
 module.exports.createBooks= createBooks
 module.exports.attribute= attribute
 module.exports.update= update
-// module.exports.getBooksData= getBooksData
+ module.exports.getBooksData= getBooksData
 // // module.exports.createBook1= createBook1
 // module.exports.getBooksWithAuthorDetails = getBooksWithAuthorDetails
  module.exports.getBooksWithAuthorAnadPublisherDetails= getBooksWithAuthorAnadPublisherDetails
