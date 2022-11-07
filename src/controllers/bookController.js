@@ -51,15 +51,15 @@ const getBooksWithAuthorAnadPublisherDetails = async function(req,res){
 
 // 5.a
 const attribute= async function(req, res){
-    let a=await publisherModel.find({publishername:["Penguin","HarperCollins"]}).select({_id:1});
-    let b=await bookModel.find({publishername:a}).select({_id:1});
+    let a=await publisherModel.find({name:["Penguin","HarperCollins"]}).select({_id:1});
+    let b=await bookModel.find({name:a}).select({_id:1});
     for (let index = 0; index < b.length; index++) {
         const element = attribute[index];
         let updatedfile=await bookModel.findByIdAndUpdate(element,{$set:{isHardCover:true}})
 
         console.log(updatedfile)
     }
-    res.send({status:updated,msg:updatedfile})
+    res.send({status:"updated",msg:updatedfile})
 }
 
 //5.b
@@ -87,7 +87,7 @@ module.exports.createBook= createBook
 module.exports.createBooks= createBooks
 module.exports.attribute= attribute
 module.exports.update= update
- module.exports.getBooksData= getBooksData
+module.exports.getBooksData= getBooksData
 // // module.exports.createBook1= createBook1
 // module.exports.getBooksWithAuthorDetails = getBooksWithAuthorDetails
  module.exports.getBooksWithAuthorAnadPublisherDetails= getBooksWithAuthorAnadPublisherDetails

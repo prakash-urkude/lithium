@@ -15,17 +15,26 @@ router.get("/test-me", function (req, res) {
 
 // router.get("/getAuthorsData", authorController.getAuthorsData)
 
+//Q1
 router.post("/createBook", bookController.createBook  )
+// Q2
+router.post("/getBooksData", bookController.getBooksData  )
+// Q3
 router.post("/createBooks", bookController.createBooks )
+// Q4
+router.get("/getBooksWithAuthorAnadPublisherDetails", bookController.getBooksWithAuthorAnadPublisherDetails)
+// Q5.a
 router.put("/update", bookController.update )
+// Q5.b
 router.put("/attribute", bookController.attribute )
+
 // router.post("/createBook1", bookController.createBook1  )
 
 // router.get("/getBooksData", bookController.getBooksData)
 
 // router.get("/getBooksWithAuthorDetails", bookController.getBooksWithAuthorDetails)
 
-router.get("/getBooksWithAuthorAnadPublisherDetails", bookController.getBooksWithAuthorAnadPublisherDetails)
+
 
 
 module.exports = router;
