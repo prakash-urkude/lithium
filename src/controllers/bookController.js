@@ -51,13 +51,13 @@ const getBooksWithAuthorAnadPublisherDetails = async function(req,res){
 
 // 5.a
 const attribute= async function(req, res){
-    let a=await publisherModel.find({name:["Penguin","HarperCollins"]}).select({_id:1});
-    let b=await bookModel.find({name:a}).select({_id:1});
+    let a=await publisherModel.findOne({name:["Penguin"]}).select({_id:1});
+    let b=await bookModel.find({ publisher:a}).select({_id:1});
     for (let index = 0; index < b.length; index++) {
         const element = attribute[index];
-        let updatedfile=await bookModel.findByIdAndUpdate(element,{$set:{isHardCover:true}})
+        const updatedfile = await bookModel.findByIdAndUpdate(element,{$set:{isHardCover:true}})
 
-        console.log(updatedfile)
+        //console.log(updatedfile)
     }
     res.send({status:"updated",msg:updatedfile})
 }
@@ -69,10 +69,10 @@ const update=async function(req, res){
     let books=await bookModel.find({author:key}).select({_id:1})
     for (let index = 0; index < books.length; index++) {
         const element = books[index];
-        let update= await bookModel.findByIdAndUpdate(element,{$inc:{price:10}}, {new:true})
+        let update= await bookModel.findByIdAndUpdate(element,{$inc:{price:10}}, {new:true})                      //new true yaha doc bna ke de dega
         console.log(update)
     }
-    res.send("Check the console")
+    res.send({msg:update})
 }
 
 
