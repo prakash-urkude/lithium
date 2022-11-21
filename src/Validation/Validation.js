@@ -5,26 +5,29 @@ const mongoose = require("mongoose");
 //__________________________ Validations : Name ___________________________________________
 
 const isValidName = function (name) {
-  const fnameRegex = /^([a-zA-Z])+$/;
+  const fnameRegex = /^[a-zA-Z][a-zA-Z ]*$/;
   return fnameRegex.test(name);
 };
 
 //__________________________ Validations : Email  ___________________________________________
 
 const isValidEmail = function (email) {
-  const emailRegex =
-    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[com]+)*$/;
+  const emailRegex =/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[com]+)*$/;
   return emailRegex.test(email);
 };
 
 //__________________________ Validations : Password  ___________________________________________
 
 const isValidLink = function (link) {
-  const linkRegex =
-  /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm;
+  const linkRegex =/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm;
   return linkRegex.test(link);
 };
+//__________________________ Validations : MobileNumber  ___________________________________________
 
+const isValidMobileNumber = function (mobile) {
+  const MobileNumberRegex = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+  return MobileNumberRegex.test(mobile);
+};
 //__________________________ Validations : Values ___________________________________________
 
 const isValid = function (value) {
@@ -46,5 +49,6 @@ module.exports = {
   isValidEmail,
   isValidName,
   isValidLink,
+  isValidMobileNumber,
   isValidObjectId,
 };
