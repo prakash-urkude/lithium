@@ -18,15 +18,17 @@ const createCollege = async function (req, res) {
     if (!name) {
       return res.status(400).send({ status: false, message : "please enter the name" })
     }
+    if (!Validations.isValidShortname(name)) {
+      return res.status(400).send({ status: false, message : "Invalid Abbreviated Name" })
+    } 
+    
     if (name) {
       const NameValidation = await CollegeModel.findOne({ name: name })
       if (Validations.isValid(NameValidation)) {
         return res.status(400).send({ status: false, message : "this name is already register" })
       }
     }
-    if (!Validations.isValidShortname(name)) {
-      return res.status(400).send({ status: false, message : "Invalid Abbreviated Name" })
-    }
+
     if (!fullName) {
       return res.status(400).send({ status: false, message : "please enter the fullName" })
     }
