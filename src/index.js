@@ -1,11 +1,17 @@
+//__________________________ Import : Necessary Package and Modules ___________________________________________
+
 const express = require("express")
-const bodyParser = require("body-parser")
+// const bodyParser = require("body-parser")
 const route = require("./routes/route")
 const { default: mongoose } = require("mongoose")
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json());
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }))
+
+//__________________________ Connection : MongoDB Cluster ___________________________________________
+
 
 mongoose.connect("mongodb+srv://aliabbasbackendcohort:AMMIabbu321@cluster67.6fp98uh.mongodb.net/database3?retryWrites=true&w=majority", {
     useNewUrlParser: true
@@ -14,6 +20,8 @@ mongoose.connect("mongodb+srv://aliabbasbackendcohort:AMMIabbu321@cluster67.6fp9
     .catch(err => console.log(err))
 
 app.use("/", route);
+
+//__________________________ Listen : Port ___________________________________________
 
 app.listen(process.env.PORT || 3000, function () {
     console.log("express app running on port" + (process.env.PORT || 3000))

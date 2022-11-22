@@ -1,4 +1,8 @@
+//______________________ Import or Require Modules ________________________________
+
 const mongoose = require("mongoose");
+
+//____________________________ Creating Schema _____________________________________
 
 const collegeSchema = new mongoose.Schema(
   {
@@ -25,5 +29,6 @@ const collegeSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+//______________________ Export the Modules ________________________________
 
 module.exports = new mongoose.model("College", collegeSchema);

@@ -1,10 +1,19 @@
+//______________________ Import or Require Modules ________________________________
+
 const CollegeModel = require("../models/collegeModel")
 const internshipModel = require("../models/internModel")
 const Validations = require("../Validation/Validation")
 
+//__________________________ Post Api : CreateCollege  ___________________________________________
+
 const createCollege = async function (req, res) {
   try {
     const data = req.body
+    if (Object.keys(data) == 0) {
+      return res
+        .status(400)
+        .send({ status: false, message: "No input provided" });
+    }
     const { name, fullName, logoLink } = data
     if (!name) {
       return res.status(400).send({ status: false, message : "please enter the name" })
@@ -49,6 +58,7 @@ const createCollege = async function (req, res) {
     return res.status(500).send({ status: false, message : err.message })
   }
 }
+//__________________________ Get Api : Getcollegedata  ___________________________________________
 
 const Getcollegedata = async function (req, res) {
   try {
@@ -82,4 +92,6 @@ const Getcollegedata = async function (req, res) {
     return res.status(500).send({ status: false, message : err.message })
   }
 }
+//______________________ Export the Modules ________________________________
+
 module.exports = { createCollege, Getcollegedata }

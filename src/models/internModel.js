@@ -1,5 +1,9 @@
+//______________________ Import or Require Modules ________________________________
+
 const mongoose = require("mongoose");
 const objectId = mongoose.Schema.Types.ObjectId;
+
+//____________________________ Creating Schema _____________________________________
 
 const internSchema = new mongoose.Schema(
   {
@@ -31,5 +35,6 @@ const internSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+//______________________ Export the Modules ________________________________
 
 module.exports = new mongoose.model("intern", internSchema);

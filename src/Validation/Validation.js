@@ -1,7 +1,7 @@
 //__________________________ Import  ___________________________________________
 
 const mongoose = require("mongoose");
-//__________________________ Validations : Name ___________________________________________
+//__________________________ Validations : Shortname ___________________________________________
 
 const isValidShortname = function (name) {
   const fnameShortRegex = /^[a-z]*$/;
@@ -14,7 +14,7 @@ const isValidName = function (name) {
   const fnameRegex = /^[a-zA-Z][a-zA-Z ]*$/;
   return fnameRegex.test(name);
 };
-//__________________________ Validations : Name ___________________________________________
+//__________________________ Validations : FullName ___________________________________________
 
 const isValidFullName = function (name) {
   const fnameRegex = /^[a-zA-Z-]*$/;
@@ -28,7 +28,7 @@ const isValidEmail = function (email) {
   return emailRegex.test(email);
 };
 
-//__________________________ Validations : Password  ___________________________________________
+//__________________________ Validations : Link  ___________________________________________
 
 const isValidLink = function (link) {
   const linkRegex =/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm;
