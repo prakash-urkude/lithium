@@ -1,11 +1,23 @@
 //__________________________ Import  ___________________________________________
 
 const mongoose = require("mongoose");
+//__________________________ Validations : Name ___________________________________________
+
+const isValidShortname = function (name) {
+  const fnameShortRegex = /^[a-z]*$/;
+  return fnameShortRegex.test(name);
+};
 
 //__________________________ Validations : Name ___________________________________________
 
 const isValidName = function (name) {
   const fnameRegex = /^[a-zA-Z][a-zA-Z ]*$/;
+  return fnameRegex.test(name);
+};
+//__________________________ Validations : Name ___________________________________________
+
+const isValidFullName = function (name) {
+  const fnameRegex = /^[a-zA-Z-]*$/;
   return fnameRegex.test(name);
 };
 
@@ -51,4 +63,6 @@ module.exports = {
   isValidLink,
   isValidMobileNumber,
   isValidObjectId,
+  isValidShortname,
+  isValidFullName
 };
