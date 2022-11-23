@@ -17,7 +17,7 @@ const isValidName = function (name) {
 //__________________________ Validations : FullName ___________________________________________
 
 const isValidFullName = function (name) {
-  const fnameRegex = /^[a-zA-Z][a-zA-Z ]*$/
+  const fnameRegex = /^[a-zA-Z][a-zA-Z ,]*$/
   ;
   return fnameRegex.test(name);
 };
