@@ -44,7 +44,7 @@ const createIntern = async function (req, res) {
         return res.status(400).send({ status: false, message: "This Email is already register" })
       }
     }
-    const college = await CollegeModel.findOne({ name : collegeName })
+    const college = await CollegeModel.findOne({ name : collegeName , isDeleted : false})
     if (college == null) {
       return res.status(404).send({ message: "there is no such college" })
     }

@@ -14,7 +14,7 @@ app.use(express.json());
 
 
 mongoose.connect("mongodb+srv://aliabbasbackendcohort:AMMIabbu321@cluster67.6fp98uh.mongodb.net/database3?retryWrites=true&w=majority", {
-    useNewUrlParser: true
+   
 })
     .then(() => console.log("mongoDb is connected"))
     .catch(err => console.log(err))

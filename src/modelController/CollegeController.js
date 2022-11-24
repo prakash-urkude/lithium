@@ -75,13 +75,12 @@ const Getcollegedata = async function (req, res) {
       return res.status(400).send({ status: false, message: "Invalid college name" })
     }
 
-    const collegeData = await CollegeModel.findOne({ name: collegeName })
+    const collegeData = await CollegeModel.findOne({ name: collegeName , isDeleted : false })
     const collegeId = collegeData["_id"]
     const internData = await internshipModel.find({ collegeId: collegeId }).select({ _id : 1 ,name : 1 , email : 1,mobile : 1})
     if (internData.length == 0) {
       return res.status(404).send({ status: false, message: "there is no intern from this college" })
-    }
-  
+    }    
     let data = {
       name: collegeData.name,
       fullName: collegeData.fullName,
