@@ -32,7 +32,7 @@ const createBook = async function (req, res) {
         if (!Validation.isValid(subcategory)) return res.status(400).send({ status: false, message: "please inter valid subcategory" })
         
         if (!reviews) return res.status(400).send({ status: false, message: "Please enter reviews" })
-        if (![0,1,2,3,4,5].includes(reviews)) return res.status(400).send({ status: false, message: "Invalid review number" })
+        if (![1,2,3,4,5].includes(reviews)) return res.status(400).send({ status: false, message: "Invalid review number" })
 
         if (!releasedAt) {
             return res.status(400).send({ status: false, message: "Please enter releasedAt" })

@@ -58,7 +58,7 @@ const login = async function (req, res) {
         if (email && password) {
             const user = await userModel.findOne({ email: email, password: password })
             if (user) {
-                const token = jwt.sign({ userID: user._id }, 'vrBest')
+                const token = jwt.sign({ userId: user._id }, 'vrBest')
                 res.setHeader("x-api-key", token);
                 return res.status(200).send({ status: true, token: token })
             }
