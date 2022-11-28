@@ -41,8 +41,39 @@ const createUser = async function (req, res) {
     } catch (err) {
         return res.status(500).send({ status: false, message: err.message });
     }
-};
+}
 
+
+
+
+const login = async function (req, res) {
+    try {
+        const email = req.body.email
+        const password = req.body.password
+
+        if (!isValidEmail(email)) { return res.status(400).send({ status: false, msg: "Email is not valid" }) }
+
+        if (!isVaildPass(password)) { return res.status(400).send({ status: false, msg: "Password should contain min 8 char , 1 uppercase , 1 special char" }) }
+
+        if (email && password) {
+            const user = await userModel.findOne({ email: email, password: password })
+            if (user) {
+                const token = jwt.sign({ userID: user._id }, 'vrBest')
+                res.setHeader("x-api-key", token);
+                return res.status(200).send({ status: true, token: token })
+            }
+            else {
+                return res.status(400).send({ status: false, msg: "invalid credentials" })
+            }
+        }
+    }
+    catch (err) {
+        return res.status(500).send({ status: false, msg: err.massage })
+    }
+}
+
+
+module.exports.login = login
 
 module.exports.createUser = createUser
 
