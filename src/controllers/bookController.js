@@ -71,10 +71,13 @@ const getBooks = async function (req, res) {
                 return res.status(404).send({ status: false, msg: "No book found for given data" })
             }
             else {
+                bookDetals.sort(function (a, b) {
+                    if (a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase) return -1
+                    if (a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase) return 1
+                    return 0
+                })
                 return res.status(200).send({ status: true, message: 'Success', data: bookDetals })
             }
-
-
         } else {
             const allBooks = await bookModel.find({ isDeleted: false })
             return res.status(200).send({ status: true, message: 'Success', data: allBooks })
