@@ -1,5 +1,7 @@
 const userModel = require("../models/userModel")
 const { isValidName, captilize, isValidEmail, isValidPhone, isVaildPass } = require("../validators/validator")
+const jwt = require("jsonwebtoken")
+
 
 const createUser = async function (req, res) {
     try {
@@ -48,11 +50,16 @@ const createUser = async function (req, res) {
 
 const login = async function (req, res) {
     try {
+
+        if (Object.keys(req.body).length == 0) return res.status(400).send({ status: false, msg: "login credentials required" })
+
         const email = req.body.email
         const password = req.body.password
 
+        if (!email) return res.status(400).send("Email is required")
         if (!isValidEmail(email)) { return res.status(400).send({ status: false, msg: "Email is not valid" }) }
-
+        
+        if (!password) return res.status(400).send("Password is required")
         if (!isVaildPass(password)) { return res.status(400).send({ status: false, msg: "Password should contain min 8 char , 1 uppercase , 1 special char" }) }
 
         if (email && password) {
@@ -68,7 +75,8 @@ const login = async function (req, res) {
         }
     }
     catch (err) {
-        return res.status(500).send({ status: false, msg: err.massage })
+        return res.status(500).send({ status: false, message: err.message })
+        console.log(err)
     }
 }
 

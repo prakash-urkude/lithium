@@ -8,35 +8,31 @@ const createBook = async function (req, res) {
 
     try {
         const data = req.body
-        if (Object.keys(data) == 0) {
-            return res
-                .status(400)
-                .send({ status: false, message: "No input provided" });
-        }
+        if (Object.keys(data) == 0) return res.status(400).send({ status: false, message: "No input provided" });
+
         const { title, excerpt, userId, ISBN, category, subcategory, reviews, releasedAt } = data
         if (!title) return res.status(400).send({ status: false, message: "Please Enter Title" })
         if (!Validation.isValid(title)) return res.status(400).send({ status: false, message: "please inter valid title" })
-        
+
+
         if (!excerpt) return res.status(400).send({ status: false, message: "Please enter excerpt" })
         if (!Validation.isValid(excerpt)) return res.status(400).send({ status: false, message: "please inter valid excerpt" })
 
+
         if (!userId) return res.status(400).send({ status: false, message: "Please enter userId" })
+
 
         if (!ISBN) return res.status(400).send({ status: false, message: "Please enter ISBN" })
         if (!Validation.isValidISBN(ISBN)) return res.status(400).send({ status: false, message: "please inter valid ISBN" })
 
+
         if (!category) return res.status(400).send({ status: false, message: "Please enter category" })
         if (!Validation.isValid(category)) return res.status(400).send({ status: false, message: "please inter valid category" })
-        
+
         if (!subcategory) return res.status(400).send({ status: false, message: "Please enter subcategory" })
         if (!Validation.isValid(subcategory)) return res.status(400).send({ status: false, message: "please inter valid subcategory" })
-        
-        if (!reviews) return res.status(400).send({ status: false, message: "Please enter reviews" })
-        if (![1,2,3,4,5].includes(reviews)) return res.status(400).send({ status: false, message: "Invalid review number" })
 
-        if (!releasedAt) {
-            return res.status(400).send({ status: false, message: "Please enter releasedAt" })
-        }
+        data.releasedAt = new Date()
 
         const bookData = await bookModel.create(data)
         res.status(201).send({ status: true, data: bookData })
@@ -89,4 +85,4 @@ const getBooks = async function (req, res) {
     }
 }
 
-module.exports = { createBook,getBooks }
+module.exports = { createBook, getBooks }

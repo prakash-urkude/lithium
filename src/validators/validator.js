@@ -1,5 +1,4 @@
-//__________________________ Import  ___________________________________________//
-const mongoose = require("mongoose");
+
 
 const isValid = function (value) {
     if (typeof value === 'undefined' || value === null) return false;
@@ -7,7 +6,7 @@ const isValid = function (value) {
     return true;
 }
 
-const isValidName = function(str){
+const isValidName = function (str) {
     let nameRegex = /^([a-zA-Z'-.]+(?: [a-zA-Z'-.]+)?)$/
     if (typeof str === "undefined" || str === null) return false;
     if (typeof str === "string" && str.trim().length === 0) return false;
@@ -24,9 +23,9 @@ const isValidPhone = function (num) {
     return reg.test(String(num));
 }
 
-const captilize = function(str) {
+const captilize = function (str) {
     return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-  }
+}
 
 const isValidPincode = function (num) {
     const reg = /^[0-9]{6}$/;
