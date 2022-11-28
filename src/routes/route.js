@@ -1,8 +1,11 @@
 const express = require("express")
 const router = express.Router()
-const userControllers = require("../controllers/userController")
+const userController = require("../controllers/userController")
+const bookController = require("../controllers/bookController")
 
-router.post("/register", userControllers.createUser);
+router.post("/register", userController.createUser);
+
+router.get("/books", bookController.getBooks);
 
 
 

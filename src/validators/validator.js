@@ -41,4 +41,5 @@ function isValidEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 
+
 module.exports = { isValid, isValidEmail, isValidName, captilize, isValidPhone, isValidPincode, isValidISBN, isVaildPass }
