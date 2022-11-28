@@ -10,8 +10,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const mongoose = require('mongoose')
 
-mongoose.connect("mongodb+srv://prakashurkude:prakash1998@cluster0.nuhssqs.mongodb.net/project/booksManagementGroup4",
-    { useNewUrlParser: true })
+mongoose.connect("mongodb+srv://prakashurkude:prakash1998@cluster0.nuhssqs.mongodb.net/project/booksManagementGroup4"
+    , { useNewUrlParser: true })
     .then(() => console.log('mongodb is connected'))
     .catch(err => console.log(err))
 
