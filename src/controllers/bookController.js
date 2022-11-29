@@ -3,7 +3,7 @@ const Validation = require("../validators/validator")
 const { isValidObjectId } = require("mongoose")
 
 
-//__________________________ Post Api : Create Book  ___________________________________________
+//__________________________ Post Api : Create Book ___________________________________________//
 
 const createBook = async function (req, res) {
 
@@ -51,7 +51,7 @@ const createBook = async function (req, res) {
     }
 }
 
-
+//__________________________ Get Api : Get Books ___________________________________________//
 const getBooks = async function (req, res) {
     try {
         if (req.query) {
@@ -94,47 +94,4 @@ const getBooks = async function (req, res) {
     }
 }
 
-
-
-
-const updateBooks = async function (req, res) {
-    try {
-        const bookId = req.params.bookId
-        const data = req.body
-        if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "Add fields to update" });
-        const { title, excerpt, releasedAt, ISBN } = req.body
-
-        let updatedData = await bookModel.findOneAndUpdate({ _id: bookId }, {
-            $set: { title: title, excerpt: excerpt, releasedAt: releasedAt, ISBN: ISBN }
-        }, { new: true, upsert: true })
-
-        return res.status(200).send({ status: true, msg: "Book updated successfuly", data: updatedData })
-
-    }
-    catch (error) {
-        return res.status(500).send({ status: false, msg: error.message })
-    }
-}
-
-
-//------------------Delete Blog by path param-----------------------/
-
-const deleteBook = async (req, res) => {
-    try {
-        let Id = req.params.bookId
-        const delatedbook = await bookModel.findOneAndUpdate({ _id: Id }, { $set: { isDeleted: true, deletedAt: new Date(Date.now()) }, }, { new: true });
-
-        if (delatedbook) {
-            res.status(200).send({ status: true, msg: delatedbook })
-        } else {
-            res.status(404).send({ status: false, msg: `${req.params.bookId} id not found!` })
-        }
-    } catch (error) {
-        res.status(500).json({
-            status: false,
-            error: error.message
-        });
-    }
-};
-
-module.exports = { createBook, getBooks, updateBooks, deleteBook }
+module.exports = { createBook, getBooks }

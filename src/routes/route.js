@@ -12,7 +12,6 @@ router.post("/books", middlewares.authentication, bookController.createBook);
 
 router.get("/books", middlewares.authentication, bookController.getBooks);
 
-router.put("/books/:bookId", middlewares.authentication, middlewares.authorisation, bookController.updateBooks);
 
 router.delete('/books/:bookId', middlewares.authentication, middlewares.authorisation, bookController.deleteBook)
 
