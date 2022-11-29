@@ -12,8 +12,7 @@ router.post("/books",middlewares.authentication, bookController.createBook);
 
 router.get("/books",middlewares.authentication, bookController.getBooks);
 
-
-
+router.get("/books/:bookId",middlewares.authentication ,bookController.getBookbyParam);
 
 
 
