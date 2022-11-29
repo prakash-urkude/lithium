@@ -104,6 +104,17 @@ const updateBooks = async function (req, res) {
         if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "Add fields to update" });
         const { title, excerpt, releasedAt, ISBN } = req.body
 
+        if (title) {
+            if (!Validation.isValid(title)) return res.status(400).send({ status: false, message: "please inter valid title" })
+            let findTitle = await bookModel.findOne({ title: title })
+            if (findTitle) return res.status(400).send({ status: false, message: "Book allrady exist for this title " })
+        }
+        if (ISBN) {
+            if (!Validation.isValidISBN(ISBN)) return res.status(400).send({ status: false, message: "please inter valid ISBN" })
+            let sibnBook = await bookModel.findOne({ ISBN: ISBN })
+            if (sibnBook) return res.status(400).send({ status: false, message: "Book allrady exist for this SIBN " })
+        }
+        
         let updatedData = await bookModel.findOneAndUpdate({ _id: bookId }, {
             $set: { title: title, excerpt: excerpt, releasedAt: releasedAt, ISBN: ISBN }
         }, { new: true, upsert: true })
