@@ -95,6 +95,8 @@ const getBooks = async function (req, res) {
 }
 
 
+
+
 const updateBooks = async function (req, res) {
     try {
         const bookId = req.params.bookId
@@ -114,4 +116,25 @@ const updateBooks = async function (req, res) {
     }
 }
 
-module.exports = { createBook, getBooks, updateBooks }
+
+//------------------Delete Blog by path param-----------------------/
+
+const deleteBook = async (req, res) => {
+    try {
+        let Id = req.params.bookId
+        const delatedbook = await bookModel.findOneAndUpdate({ _id: Id }, { $set: { isDeleted: true, deletedAt: new Date(Date.now()) }, }, { new: true });
+
+        if (delatedbook) {
+            res.status(200).send({ status: true, msg: delatedbook })
+        } else {
+            res.status(404).send({ status: false, msg: `${req.params.bookId} id not found!` })
+        }
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            error: error.message
+        });
+    }
+};
+
+module.exports = { createBook, getBooks, updateBooks, deleteBook }
