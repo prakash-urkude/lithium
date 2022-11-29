@@ -14,7 +14,7 @@ router.get("/books", middlewares.authentication, bookController.getBooks);
 
 router.put("/books/:bookId", middlewares.authentication, middlewares.authorisation, bookController.updateBooks);
 
-router.delete('/books/:bookId',middlewares.authentication,middlewares.authorisation,bookController.deleteBook)
+router.delete('/books/:bookId', middlewares.authentication, middlewares.authorisation, bookController.deleteBook)
 
 
 module.exports = router

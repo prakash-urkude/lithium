@@ -10,7 +10,7 @@ const createBook = async function (req, res) {
     try {
         const data = req.body
         if (Object.keys(data) == 0) return res.status(400).send({ status: false, message: "No input provided" });
-        const { title, excerpt, userId, ISBN, category, subcategory, reviews, releasedAt } = data
+        const { title, excerpt, userId, ISBN, category, subcategory} = data
 
         if (!userId) return res.status(400).send({ status: false, message: "Please enter userId" })
         if (!isValidObjectId(userId)) return res.status(404).send({ status: false, message: "user not found for this user Id" })
