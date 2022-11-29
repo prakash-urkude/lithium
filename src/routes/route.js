@@ -8,15 +8,11 @@ router.post("/register", userController.createUser);
 
 router.post("/login", userController.login);
 
-router.post("/books",middlewares.authentication, bookController.createBook);
+router.post("/books", middlewares.authentication, bookController.createBook);
 
-router.get("/books",middlewares.authentication, bookController.getBooks);
+router.get("/books", middlewares.authentication, bookController.getBooks);
 
-
-
-
-
-
+router.put("/books/:bookId", middlewares.authentication, middlewares.authorisation, bookController.updateBooks);
 
 
 

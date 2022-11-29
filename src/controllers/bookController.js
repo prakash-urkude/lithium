@@ -94,4 +94,24 @@ const getBooks = async function (req, res) {
     }
 }
 
-module.exports = { createBook, getBooks }
+
+const updateBooks = async function (req, res) {
+    try {
+        const bookId = req.params.bookId
+        const data = req.body
+        if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "Add fields to update" });
+        const { title, excerpt, releasedAt, ISBN } = req.body
+
+        let updatedData = await bookModel.findOneAndUpdate({ _id: bookId }, {
+            $set: { title: title, excerpt: excerpt, releasedAt: releasedAt, ISBN: ISBN }
+        }, { new: true, upsert: true })
+
+        return res.status(200).send({ status: true, msg: "Book updated successfuly", data: updatedData })
+
+    }
+    catch (error) {
+        return res.status(500).send({ status: false, msg: error.message })
+    }
+}
+
+module.exports = { createBook, getBooks, updateBooks }

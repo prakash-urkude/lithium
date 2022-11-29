@@ -10,7 +10,7 @@ const authentication = function (req, res, next) {
 
         let decodedToken = jwt.verify(token, 'vrBest', function (err, decodedToken) {
 
-            if (err) { return res.status(401).send({ status: false, msg: "invalid Token comming" }) }
+            if (err) { return res.status(401).send({ status: false, msg: "invalid Token " }) }
             else {
                 req.decodedToken = decodedToken
                 next()
