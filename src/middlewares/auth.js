@@ -8,7 +8,7 @@ const authentication = function (req, res, next) {
         let token = req.headers["x-api-key"];
         if (!token) return res.status(400).send({ status: false, msg: "token must be present in header" })
 
-        var decodedToken = jwt.verify(token, 'vrBest', function (err, decodedToken) {
+        let decodedToken = jwt.verify(token, 'vrBest', function (err, decodedToken) {
 
             if (err) { return res.status(401).send({ status: false, msg: "invalid Token comming" }) }
             else {

@@ -8,9 +8,9 @@ router.post("/register", userController.createUser);
 
 router.post("/login", userController.login);
 
-router.post("/books", bookController.createBook);
+router.post("/books",middlewares.authentication, bookController.createBook);
 
-router.get("/books", bookController.getBooks);
+router.get("/books",middlewares.authentication, bookController.getBooks);
 
 
 
