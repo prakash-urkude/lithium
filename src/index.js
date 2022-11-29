@@ -7,7 +7,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-
+// Database of this project is in group4Database folder
 mongoose.connect("mongodb+srv://prakashurkude:prakash1998@cluster0.nuhssqs.mongodb.net/group4Database"
     , { useNewUrlParser: true })
     .then(() => console.log('mongodb is connected'))
