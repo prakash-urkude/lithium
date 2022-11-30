@@ -10,11 +10,11 @@ let creatReview = async function (req, res) {
     let bookId = req.params.bookId
     const data = req.body
 
-    if (Object.keys(data) == 0) return res.status(400).send({ status: false, message: "No input provided" });
+    if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "No input provided" });
     const { reviewedBy, rating, } = data
 
     if (reviewedBy) {
-      if (!isValidName(reviewedBy)) return res.status(400).send("Please provide a valid name")
+      if (!Validation.isValidName(reviewedBy)) return res.status(400).send("Please provide a valid name")
     }
 
     if (!rating) return res.status(400).send("Please provide a reating for book")
@@ -38,7 +38,6 @@ let creatReview = async function (req, res) {
     let updateBook = await bookModel.findOneAndUpdate({ _id: bookId }, { $inc: { reviews: 1 } }, { new: true })
 
     let str = JSON.stringify(updateBook);
-
     let obj = JSON.parse(str)
     console.log(obj)
 
