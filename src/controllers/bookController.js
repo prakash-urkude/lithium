@@ -14,7 +14,7 @@ const createBook = async function (req, res) {
 
         if (!userId) return res.status(400).send({ status: false, message: "Please enter userId" })
         if (!isValidObjectId(userId)) return res.status(404).send({ status: false, message: "user not found for this user Id" })
-        if (userId != req.decodedToken.userId) return res.status(403).send({ status: false, msg: "you do not have authorization to this " });
+        // if (userId != req.decodedToken.userId) return res.status(403).send({ status: false, msg: "you do not have authorization to this " });
 
         //  -------------------------------Title Validation-----------------------
         if (!title) return res.status(400).send({ status: false, message: "Please Enter Title" })
@@ -114,7 +114,7 @@ const updateBooks = async function (req, res) {
             let sibnBook = await bookModel.findOne({ ISBN: ISBN })
             if (sibnBook) return res.status(400).send({ status: false, message: "Book allrady exist for this SIBN " })
         }
-        
+
         let updatedData = await bookModel.findOneAndUpdate({ _id: bookId }, {
             $set: { title: title, excerpt: excerpt, releasedAt: releasedAt, ISBN: ISBN }
         }, { new: true, upsert: true })
