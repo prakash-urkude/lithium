@@ -21,5 +21,9 @@ router.get("/books/:bookId", middlewares.authentication, bookController.getBookb
 
 router.post("/books/:bookId/review", reviewController.creatReview);
 
+router.put("/books/:bookId/review/:reviewId", reviewController.updatedReview);
+
+router.delete("/books/:bookId/review/:reviewId", reviewController.deleteReviewByParam);
+
 module.exports = router
 
