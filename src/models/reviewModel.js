@@ -3,15 +3,14 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 const reviewSchema = new mongoose.Schema({
     bookId: {
         type: ObjectId,
-        required: true,
         ref: 'Book',
         trim: true
     },
     reviewedBy: {
         type: String,
-        required: true,
-        trim: true,
-        default: 'Guest'
+        default: 'Guest',
+        trim: true
+
     },
     reviewedAt: {
         type: Date,
@@ -19,7 +18,8 @@ const reviewSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        enum: [1,2,3,4,5],
+        required: true,
+        enum: [1, 2, 3, 4, 5],
     },
     review: {
         type: String,
@@ -28,5 +28,5 @@ const reviewSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-},{ timestamps: true })
+}, { timestamps: true })
 module.exports = mongoose.model('Review', reviewSchema)

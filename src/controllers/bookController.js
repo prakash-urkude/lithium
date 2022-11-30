@@ -153,16 +153,16 @@ const getBookbyParam = async function (req, res) {
         const bookId = req.params.bookId
         if (!bookId) return res.status(400).send({ status: false, error: "please inter bookid" })
         if (!isValidObjectId(bookId)) return res.status(400).send({ status: false, msg: "Enter a valid bookId" })
-  
+
         const books = await bookModel.find({ _id: bookId })
         if (books.isDeleted) return res.status(404).send({ status: false, msg: "Book is already been deleted" })
         if (!books) return res.status(400).send({ status: false, error: "there is no such book exist" })
-  
+
         res.status(200).send({ status: true, data: books })
-  
+
     } catch (error) {
         res.status(500).send({ status: false, error: error.mesage })
     }
-  }
+}
 
-module.exports = { createBook, getBooks, updateBooks, deleteBook,getBookbyParam }
+module.exports = { createBook, getBooks, updateBooks, deleteBook, getBookbyParam }
