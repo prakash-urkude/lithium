@@ -77,15 +77,17 @@ const getBooks = async function (req, res) {
                 return res.status(404).send({ status: false, msg: "No book found for given data" })
             }
             else {
-                bookDetals.sort(function (a, b) {
-                    if (a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase) return -1
-                    if (a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase) return 1
+                function alfaOrder(obj1, obj2) {
+                    if (obj1.title < obj2.title) return -1
+                    if (obj1.title > obj2.title) return 1
                     return 0
-                })
+                }
+                bookDetals.sort(alfaOrder)
                 return res.status(200).send({ status: true, message: 'Success', data: bookDetals })
             }
         } else {
             const allBooks = await bookModel.find({ isDeleted: false })
+            allBooks.sort(alfaOrder)
             return res.status(200).send({ status: true, message: 'Success', data: allBooks })
         }
 
@@ -154,12 +156,19 @@ const getBookbyParam = async function (req, res) {
         if (!bookId) return res.status(400).send({ status: false, error: "please inter bookid" })
         if (!isValidObjectId(bookId)) return res.status(400).send({ status: false, msg: "Enter a valid bookId" })
 
-        const books = await bookModel.find({ _id: bookId })
+        const books = await bookModel.findById({ _id: bookId })
         if (books.isDeleted) return res.status(404).send({ status: false, msg: "Book is already been deleted" })
         if (!books) return res.status(400).send({ status: false, error: "there is no such book exist" })
 
-        res.status(200).send({ status: true, data: books })
+        const bookWithReview = await reviewModel.find({ bookId: bookId })
+        let string = JSON.stringify(books);
 
+        let object1 = JSON.parse(string)
+
+        object1.allreviews = bookWithReview
+
+        res.status(200).send({ status: true, message: 'Books list', data: object1 })
+        console.log(object1)
     } catch (error) {
         res.status(500).send({ status: false, error: error.mesage })
     }
