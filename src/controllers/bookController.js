@@ -135,11 +135,12 @@ const updateBooks = async function (req, res) {
 
 const deleteBook = async (req, res) => {
     try {
-        let Id = req.params.bookId
-        const delatedbook = await bookModel.findOneAndUpdate({ _id: Id }, { $set: { isDeleted: true, deletedAt: new Date(Date.now()) }, }, { new: true });
+        let bookId = req.params.bookId
+        const delatedbook = await bookModel.findOneAndUpdate({ _id: bookId }, { $set: { isDeleted: true, deletedAt: new Date(Date.now()) }, }, { new: true });
 
         if (delatedbook) {
-            return res.status(200).send({ status: true, msg: delatedbook })
+            await reviewModel.updateMany({ _id: reviewId }, { $set: { isDeleted: true } });
+            return res.status(200).send({ status: true, msg: "Book is deleated successfuly with its reviews", data: delatedbook })
         } else {
             res.status(404).send({ status: false, msg: "No Book found for this id" })
         }
