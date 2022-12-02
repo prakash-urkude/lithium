@@ -7,7 +7,7 @@ const isValid = function (value) {
 }
 
 
-  
+
 const isValidName = function (str) {
     let nameRegex = /^([a-zA-Z'-.]+(?: [a-zA-Z'-.]+)?)$/
     if (typeof str === "undefined" || str === null) return false;
@@ -17,7 +17,7 @@ const isValidName = function (str) {
 
 
 const isVaildPass = function (str) {
-    var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{7,15}$/;
+    const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{7,15}$/;
     return re.test(str);
 }
 
@@ -26,8 +26,10 @@ const isValidPhone = function (num) {
     return reg.test(String(num));
 }
 
-const captilize = function (str) {
-    return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+const IsValidDate = function (date) {
+    const dateregex = /^[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/
+    return dateregex.test(String(date));
+
 }
 
 const isValidPincode = function (num) {
@@ -46,4 +48,8 @@ function isValidEmail(email) {
 }
 
 
-module.exports = { isValid, isValidEmail, isValidName, captilize, isValidPhone, isValidPincode, isValidISBN, isVaildPass }
+const captilize = function (str) {
+    return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+module.exports = { isValid, isValidEmail, isValidName, captilize, isValidPhone, isValidPincode, isValidISBN, isVaildPass, IsValidDate }

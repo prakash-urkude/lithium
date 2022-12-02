@@ -11,7 +11,7 @@ const createBook = async function (req, res) {
     try {
         const data = req.body
         if (Object.keys(data) == 0) return res.status(400).send({ status: false, message: "No input provided" });
-        const { title, excerpt, userId, ISBN, category, subcategory } = data
+        const { title, excerpt, userId, ISBN, category, subcategory, releasedAt } = data
 
         if (!userId) return res.status(400).send({ status: false, message: "Please enter userId" })
         if (!isValidObjectId(userId)) return res.status(404).send({ status: false, message: "user not found for this user Id" })
@@ -42,8 +42,9 @@ const createBook = async function (req, res) {
         if (!subcategory) return res.status(400).send({ status: false, message: "Please enter subcategory" })
         if (!Validation.isValidName(subcategory.trim())) return res.status(400).send({ status: false, message: "please inter valid subcategory" })
 
+        if (!releasedAt) return res.status(400).send({ status: false, message: "Please enter releasedAt" })
+        if (!Validation.IsValidDate(releasedAt)) return res.status(400).send({ status: false, message: "please inter valid releasedAt in format: YYYY-MM-DD" })
 
-        data.releasedAt = new Date(Date.now())
         const bookData = await bookModel.create(data)
         res.status(201).send({ status: true, data: bookData })
     }
