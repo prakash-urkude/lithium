@@ -1,5 +1,6 @@
 const bookModel = require("../models/bookModel")
 const Validation = require("../validators/validator")
+const reviewModel = require("../models/reviewModel")
 const { isValidObjectId } = require("mongoose")
 
 
@@ -14,7 +15,7 @@ const createBook = async function (req, res) {
 
         if (!userId) return res.status(400).send({ status: false, message: "Please enter userId" })
         if (!isValidObjectId(userId)) return res.status(404).send({ status: false, message: "user not found for this user Id" })
-        // if (userId != req.decodedToken.userId) return res.status(403).send({ status: false, msg: "you do not have authorization to this " });
+        if (userId != req.decodedToken.userId) return res.status(403).send({ status: false, msg: "you do not have authorization to this " });
 
         //  -------------------------------Title Validation-----------------------
         if (!title) return res.status(400).send({ status: false, message: "Please Enter Title" })
@@ -25,9 +26,9 @@ const createBook = async function (req, res) {
 
         //  -------------------------------SIBN Validation-----------------------
         if (!ISBN) return res.status(400).send({ status: false, message: "Please enter ISBN" })
-        if (!Validation.isValidISBN(ISBN)) return res.status(400).send({ status: false, message: "please inter valid ISBN" })
+        if (!Validation.isValidISBN(ISBN.trim())) return res.status(400).send({ status: false, message: "please inter valid ISBN" })
         let sibnBook = await bookModel.findOne({ ISBN: ISBN })
-        if (sibnBook) return res.status(400).send({ status: false, message: "Book allrady exist for this SIBN " })
+        if (sibnBook) return res.status(400).send({ status: false, message: "Book allrady exist for this ISBN " })
         // -----------------------------------------
 
         if (!excerpt) return res.status(400).send({ status: false, message: "Please enter excerpt" })
@@ -35,11 +36,11 @@ const createBook = async function (req, res) {
 
 
         if (!category) return res.status(400).send({ status: false, message: "Please enter category" })
-        if (!Validation.isValid(category)) return res.status(400).send({ status: false, message: "please inter valid category" })
+        if (!Validation.isValidName(category.trim())) return res.status(400).send({ status: false, message: "please inter valid category" })
 
 
         if (!subcategory) return res.status(400).send({ status: false, message: "Please enter subcategory" })
-        if (!Validation.isValid(subcategory)) return res.status(400).send({ status: false, message: "please inter valid subcategory" })
+        if (!Validation.isValidName(subcategory.trim())) return res.status(400).send({ status: false, message: "please inter valid subcategory" })
 
 
         data.releasedAt = new Date(Date.now())
@@ -69,7 +70,7 @@ const getBooks = async function (req, res) {
                 obj.subcategory = subcategory
             }
 
-            if (Object.keys.length == 0) return res.status(400).send({ status: false, message: "Invalide query params" })
+            if (Object.keys(obj).length == 0) return res.status(400).send({ status: false, message: "Invalid query params" })
 
             obj.isDeleted = false
             const bookDetals = await bookModel.find(obj).select({ title: 1, excerpt: 1, userId: 1, category: 1, subcategory: 1, reviews: 1, releasedAt: 1 })
@@ -96,6 +97,36 @@ const getBooks = async function (req, res) {
         return res.status(500).send({ status: false, msg: err.message })
     }
 }
+
+
+
+
+
+const getBookbyParam = async function (req, res) {
+    try {
+        const bookId = req.params.bookId
+        if (!bookId) return res.status(400).send({ status: false, error: "please inter bookid" })
+        if (!isValidObjectId(bookId)) return res.status(400).send({ status: false, msg: "Enter a valid bookId" })
+
+        const books = await bookModel.findById({ _id: bookId })
+        if (books.isDeleted) return res.status(404).send({ status: false, msg: "Book is already been deleted" })
+        if (!books) return res.status(400).send({ status: false, error: "there is no such book exist" })
+
+        const bookWithReview = await reviewModel.find({ bookId: bookId })
+        console.log(bookWithReview)
+        let string = JSON.stringify(books);
+        let book1 = JSON.parse(string)
+
+        book1.allreviews = bookWithReview
+
+        console.log(book1)
+        return res.status(200).send({ status: true, message: 'Books list', data: book1 })
+    } catch (error) {
+        return res.status(500).send({ status: false, error: error.message })
+    }
+}
+
+
 
 
 //------------------update API-----------------------//
@@ -145,34 +176,10 @@ const deleteBook = async (req, res) => {
             res.status(404).send({ status: false, msg: "No Book found for this id" })
         }
     } catch (error) {
-        return res.status(500).json({ status: false, error: error.message });
+        return res.status(500).json({ status: false, msg: error.message });
     }
 };
 
-//------------------get by path param-----------------------//
 
-const getBookbyParam = async function (req, res) {
-    try {
-        const bookId = req.params.bookId
-        if (!bookId) return res.status(400).send({ status: false, error: "please inter bookid" })
-        if (!isValidObjectId(bookId)) return res.status(400).send({ status: false, msg: "Enter a valid bookId" })
-
-        const books = await bookModel.findById({ _id: bookId })
-        if (books.isDeleted) return res.status(404).send({ status: false, msg: "Book is already been deleted" })
-        if (!books) return res.status(400).send({ status: false, error: "there is no such book exist" })
-
-        const bookWithReview = await reviewModel.find({ bookId: bookId })
-        let string = JSON.stringify(books);
-
-        let object1 = JSON.parse(string)
-
-        object1.allreviews = bookWithReview
-
-        res.status(200).send({ status: true, message: 'Books list', data: object1 })
-        console.log(object1)
-    } catch (error) {
-        res.status(500).send({ status: false, error: error.mesage })
-    }
-}
 
 module.exports = { createBook, getBooks, updateBooks, deleteBook, getBookbyParam }
