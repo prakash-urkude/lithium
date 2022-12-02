@@ -36,11 +36,11 @@ const createBook = async function (req, res) {
 
 
         if (!category) return res.status(400).send({ status: false, message: "Please enter category" })
-        if (!Validation.isValidName(category.trim())) return res.status(400).send({ status: false, message: "please inter valid category" })
+        if (!Validation.isValidStr(category.trim())) return res.status(400).send({ status: false, message: "please inter valid category" })
 
 
         if (!subcategory) return res.status(400).send({ status: false, message: "Please enter subcategory" })
-        if (!Validation.isValidName(subcategory.trim())) return res.status(400).send({ status: false, message: "please inter valid subcategory" })
+        if (!Validation.isValidStr(subcategory.trim())) return res.status(400).send({ status: false, message: "please inter valid subcategory" })
 
         if (!releasedAt) return res.status(400).send({ status: false, message: "Please enter releasedAt" })
         if (!Validation.IsValidDate(releasedAt)) return res.status(400).send({ status: false, message: "please inter valid releasedAt in format: YYYY-MM-DD" })

@@ -13,7 +13,7 @@ let creatReview = async function (req, res) {
     const { reviewedBy, rating, } = data
 
     if (reviewedBy) {
-      if (!Validation.isValidName(reviewedBy)) return res.status(400).send("Please provide a valid name")
+      if (!Validation.isValidName(reviewedBy)) return res.status(400).send("Please provide a valid name with surname")
     }
 
     if (!rating) return res.status(400).send("Please provide a reating for book")
@@ -37,7 +37,7 @@ let creatReview = async function (req, res) {
     let updateBook = await bookModel.findOneAndUpdate({ _id: bookId }, { $inc: { reviews: 1 } }, { new: true })
 
     updateBook = updateBook.toObject()
-    updateBook.allReview = reviewBook
+    updateBook.newReview = reviewBook
 
 
     // let str = JSON.stringify(updateBook);
@@ -80,7 +80,7 @@ let updatedReview = async function (req, res) {
     if (![1, 2, 3, 4, 5].includes(rating)) return res.status(400).send({ status: false, msg: "Please provide valid rating between 1 to 5" })
 
 
-    if (!Validation.isValidName(reviewedBy)) { return res.status(400).send({ status: false, message: "Please provide a valid name(only alphabets allowed)" }) }
+    if (!Validation.isValidName(reviewedBy)) { return res.status(400).send({ status: false, message: "Please provide a valid name with surname" }) }
 
     let updateData = await reviewModel.findOneAndUpdate({ _id: reviewId }, { $set: { reviewedBy: data.reviewedBy, rating: data.rating, review: data.review, } }, { new: true })
     res.status(200).send({ status: true, message: updateData })

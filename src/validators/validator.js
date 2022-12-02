@@ -15,6 +15,13 @@ const isValidName = function (str) {
     if (nameRegex.test(str)) return true;
 }
 
+const isValidStr = function (abc) {
+    if (typeof abc === 'undefined') return false;
+    if (typeof abc != 'string' && abc.trim().length === 0) return false
+    const regex = /^[a-z/\s/A-Z]{3,100}$/;
+    return regex.test(String(abc));
+}
+
 
 const isVaildPass = function (str) {
     const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{7,15}$/;
@@ -52,4 +59,4 @@ const captilize = function (str) {
     return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
 
-module.exports = { isValid, isValidEmail, isValidName, captilize, isValidPhone, isValidPincode, isValidISBN, isVaildPass, IsValidDate }
+module.exports = { isValid, isValidEmail, isValidName, captilize, isValidPhone, isValidPincode, isValidISBN, isVaildPass, IsValidDate, isValidStr }
