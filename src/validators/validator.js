@@ -9,7 +9,7 @@ const isValid = function (value) {
 
 
 const isValidName = function (str) {
-    let nameRegex = /^([a-zA-Z'-.]+(?: [a-zA-Z'-.]+)?)$/
+    let nameRegex = /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)$/
     if (typeof str === "undefined" || str === null) return false;
     if (typeof str === "string" && str.trim().length === 0) return false;
     if (nameRegex.test(str)) return true;

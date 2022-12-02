@@ -71,7 +71,6 @@ const getBooks = async function (req, res) {
                 obj.subcategory = subcategory
             }
 
-            if (Object.keys(obj).length == 0) return res.status(400).send({ status: false, message: "Invalid query params" })
 
             obj.isDeleted = false
             const bookDetals = await bookModel.find(obj).select({ title: 1, excerpt: 1, userId: 1, category: 1, subcategory: 1, reviews: 1, releasedAt: 1 })
@@ -101,7 +100,7 @@ const getBooks = async function (req, res) {
 
 
 
-
+// ----------------------------------getBookbyParam----------------------------------
 
 const getBookbyParam = async function (req, res) {
     try {

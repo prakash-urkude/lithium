@@ -1,10 +1,9 @@
 const bookModel = require("../models/bookModel")
 const reviewModel = require("../models/reviewModel")
 const Validation = require("../validators/validator")
-const mongoose = require("mongoose")
 const { isValidObjectId } = require("mongoose")
 
-
+// ----------------------------creatReview-------------------------
 let creatReview = async function (req, res) {
   try {
     let bookId = req.params.bookId
@@ -37,14 +36,15 @@ let creatReview = async function (req, res) {
     let reviewBook = await reviewModel.create(data)
     let updateBook = await bookModel.findOneAndUpdate({ _id: bookId }, { $inc: { reviews: 1 } }, { new: true })
 
-    let str = JSON.stringify(updateBook);
-    let obj = JSON.parse(str)
-    // console.log(obj)
+    updateBook = updateBook.toObject()
+    updateBook.allReview = reviewBook
 
-    obj.review = reviewBook
-    // console.log(obj)
 
-    return res.status(201).send({ status: true, Data: obj })
+    // let str = JSON.stringify(updateBook);
+    // let obj = JSON.parse(str)
+    // obj.review = reviewBook
+    
+    return res.status(201).send({ status: true, Data: updateBook })
 
   }
   catch (error) {
@@ -52,7 +52,7 @@ let creatReview = async function (req, res) {
   }
 }
 
-
+// ----------------------------------updatedReview-----------------------------
 let updatedReview = async function (req, res) {
 
   try {
@@ -90,7 +90,7 @@ let updatedReview = async function (req, res) {
 }
 
 
-
+// -----------------------------------deleteReviewByParam------------------------------
 
 const deleteReviewByParam = async function (req, res) {
   try {

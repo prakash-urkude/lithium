@@ -8,35 +8,35 @@ const createUser = async function (req, res) {
         const data = req.body
         const { title, name, phone, email, password } = data
         if (Object.keys(data).length == 0) return res.status(400).send("Body is empty")
-        
+
         //---------------------------- Title Validation---------------------/
         let titles = ["Mr", "Mrs", "Miss"]
         if (!title) return res.status(400).send("Title is required")
         if (!titles.includes(title.trim())) return res.status(400).send({ status: false, msg: "Please provide the title in these options - Mr || Mrs || Miss" })
-        
+
         //--------------------- Name Validation----------------------------/
         if (!name) return res.status(400).send("Name is required")
-        if (!isValidName(name.trim())) return res.status(400).send({status: false, msg:"Please provide a valid name"})
+        if (!isValidName(name.trim())) return res.status(400).send({ status: false, msg: "Please provide a valid name with surname" })
         data.name = captilize(name)
 
         //--------------------------Phone Validation-------------------------/
 
         if (!phone) return res.status(400).send("Phone is required")
-        if (!isValidPhone(phone.trim())) return res.status(400).send({status: false, msg:"Please provide a valid Phone Number"})
+        if (!isValidPhone(phone.trim())) return res.status(400).send({ status: false, msg: "Please provide a valid Phone Number" })
         let uniquePhone = await userModel.findOne({ phone: phone })
         if (uniquePhone) return res.status(400).send({ status: false, message: "Phone is already exist" })
 
         //----------------------- Email Validation---------------------------/
 
         if (!email) return res.status(400).send("Email is required")
-        if (!isValidEmail(email.trim())) return res.status(400).send({status: false, msg:"Please provide a valid Email-Id"})
+        if (!isValidEmail(email.trim())) return res.status(400).send({ status: false, msg: "Please provide a valid Email-Id" })
         let uniqueEmail = await userModel.findOne({ email: email })
         if (uniqueEmail) return res.status(400).send({ status: false, message: "Email is already exist" })
 
         //---------------------------Password Validation--------------------/
 
         if (!password) return res.status(400).send("Password is required")
-        if (!isVaildPass(password.trim())) return res.status(400).send({status: false, msg:"Please provide a valid Password with min 8 char, Capatial & special char "})
+        if (!isVaildPass(password.trim())) return res.status(400).send({ status: false, msg: "Please provide a valid Password with min 8 char, Capatial & special char " })
 
 
         let saveData = await userModel.create(data)
