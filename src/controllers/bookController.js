@@ -167,16 +167,16 @@ const updateBooks = async function (req, res) {
 const deleteBook = async (req, res) => {
     try {
         let bookId = req.params.bookId
-        const delatedbook = await bookModel.findOneAndUpdate({ _id: bookId }, { $set: { isDeleted: true, deletedAt: new Date(Date.now()) }, }, { new: true });
+        const delatedbookId = await bookModel.findOneAndUpdate({ _id: bookId }, { $set: { isDeleted: true, deletedAt: new Date(Date.now()) }, }, { new: true }).select({ reviewId: 1 });
 
-        if (delatedbook) {
-            await reviewModel.updateMany({ _id: reviewId }, { $set: { isDeleted: true } });
-            return res.status(200).send({ status: true, msg: "Book is deleated successfuly with its reviews", data: delatedbook })
+        if (delatedbookId) {
+            await reviewModel.updateMany({ bookId: delatedbookId }, { $set: { isDeleted: true } });
+            return res.status(200).send({ status: true, msg: "Book is deleated successfuly with its reviews"})
         } else {
             res.status(404).send({ status: false, msg: "No Book found for this id" })
         }
     } catch (error) {
-        return res.status(500).json({ status: false, msg: error.message });
+        return res.status(500).send({ status: false, msg: error.message });
     }
 };
 
