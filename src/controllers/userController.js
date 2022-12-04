@@ -36,7 +36,7 @@ const createUser = async function (req, res) {
         //---------------------------Password Validation--------------------/
 
         if (!password) return res.status(400).send("Password is required")
-        if (!isVaildPass(password.trim())) return res.status(400).send({ status: false, msg: "Please provide a valid Password with min 8 char, Capatial & special char " })
+        if (!isVaildPass(password.trim())) return res.status(400).send({ status: false, msg: "Please provide a valid Password with min 8 to 15 char with Capatial & special (@#$%^!) char " })
 
 
         let saveData = await userModel.create(data)
@@ -57,10 +57,10 @@ const login = async function (req, res) {
         const email = req.body.email
         const password = req.body.password
 
-        if (!email) return res.status(400).send("Email is required")
+        if (!email) return res.status(400).send({ status: false, msg: "Email is required" })
         if (!isValidEmail(email)) { return res.status(400).send({ status: false, msg: "Email is not valid" }) }
 
-        if (!password) return res.status(400).send("Password is required")
+        if (!password) return res.status(400).send({ status: false, msg: "Password is required" })
         if (!isVaildPass(password)) { return res.status(400).send({ status: false, msg: "Password should contain min 8 char , 1 uppercase , 1 special char" }) }
 
         if (email && password) {

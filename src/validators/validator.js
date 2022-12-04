@@ -24,7 +24,7 @@ const isValidStr = function (abc) {
 
 
 const isVaildPass = function (str) {
-    const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{7,15}$/;
+    const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,15}$/;
     return re.test(str);
 }
 
