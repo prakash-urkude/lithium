@@ -111,7 +111,7 @@ const getBookbyParam = async function (req, res) {
         if (books.isDeleted) return res.status(404).send({ status: false, msg: "Book is already been deleted" })
         if (!books) return res.status(400).send({ status: false, error: "there is no such book exist" })
 
-        const bookWithReview = await reviewModel.find({ bookId: bookId })
+        const bookWithReview = await reviewModel.find({ bookId: bookId, isDeleted: false })
 
         console.log(bookWithReview)
         let string = JSON.stringify(books);
@@ -171,7 +171,7 @@ const deleteBook = async (req, res) => {
 
         if (delatedbookId) {
             await reviewModel.updateMany({ bookId: delatedbookId }, { $set: { isDeleted: true } });
-            return res.status(200).send({ status: true, msg: "Book is deleated successfuly with its reviews"})
+            return res.status(200).send({ status: true, msg: "Book is deleated successfuly with its reviews" })
         } else {
             res.status(404).send({ status: false, msg: "No Book found for this id" })
         }
