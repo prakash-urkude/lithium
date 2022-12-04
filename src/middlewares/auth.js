@@ -30,7 +30,7 @@ const authorisation = async function (req, res, next) {
 
         let book = await bookModel.findOne({ _id: getbookId })
         if (!book) return res.status(404).send({ status: false, msg: "Book not found !" })
-        if (book.isDeleted) return res.status(404).send({ status: false, msg: "Book is already been deleted" })
+        if (book.isDeleted) return res.status(400).send({ status: false, msg: "Book is already been deleted" })
 
         let userId = book.userId
         if (userId != req.decodedToken.userId) return res.status(403).send({ status: false, msg: "you do not have authorization to this " });

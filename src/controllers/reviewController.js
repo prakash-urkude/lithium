@@ -10,7 +10,7 @@ let creatReview = async function (req, res) {
     const data = req.body
 
     if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "No input provided" });
-    const { reviewedBy, rating, } = data
+    const { reviewedBy, rating, reviewedAt } = data
 
     if (reviewedBy) {
       if (!Validation.isValidName(reviewedBy)) return res.status(400).send("Please provide a valid name with surname")
@@ -27,8 +27,8 @@ let creatReview = async function (req, res) {
     if (!bookCheck) return res.status(404).send({ status: false, message: "book not found" })
     if (bookCheck.isDeleted) return res.status(400).send({ status: false, message: " book already deleted" })
 
-    data.reviewedAt = new Date()
-
+    if(!reviewedAt) return res.status(400).send({ status: false, message: "Please enter reviewedAt" })
+    if (!Validation.IsValidDate(reviewedAt)) return res.status(400).send({ status: false, message: "please inter valid reviewedAt in format: YYYY-MM-DD" })
     data.bookId = bookId;
 
     console.log(data)
@@ -43,7 +43,7 @@ let creatReview = async function (req, res) {
     // let str = JSON.stringify(updateBook);
     // let obj = JSON.parse(str)
     // obj.review = reviewBook
-    
+
     return res.status(201).send({ status: true, Data: updateBook })
 
   }
@@ -59,7 +59,7 @@ let updatedReview = async function (req, res) {
     let data = req.body
     let bookId = req.params.bookId
     let reviewId = req.params.reviewId
-    
+
 
     if (!isValidObjectId(bookId)) { return res.status(400).send({ status: false, Message: "Invalid bookId" }) }
     if (!isValidObjectId(reviewId)) { return res.status(400).send({ status: false, Message: "Invalid reviewId" }) }
@@ -76,7 +76,7 @@ let updatedReview = async function (req, res) {
 
     let { reviewedBy, rating } = data;
 
-    if (!rating)return res.status(400).send({ status: false, message: "Please provide rating between 1 to 5" })
+    if (!rating) return res.status(400).send({ status: false, message: "Please provide rating between 1 to 5" })
     if (![1, 2, 3, 4, 5].includes(rating)) return res.status(400).send({ status: false, msg: "Please provide valid rating between 1 to 5" })
 
 

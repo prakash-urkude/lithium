@@ -9,7 +9,7 @@ router.post("/register", userController.createUser);
 
 router.post("/login", userController.login);
 
-router.post("/books", middlewares.authentication, bookController.createBook);
+router.post("/books",middlewares.authentication, bookController.createBook);
 
 router.get("/books", middlewares.authentication, bookController.getBooks);
 
@@ -26,8 +26,8 @@ router.put("/books/:bookId/review/:reviewId", reviewController.updatedReview);
 router.delete("/books/:bookId/review/:reviewId", reviewController.deleteReviewByParam);
 
 
-router.all("/**", (req, res) => {
-    return res.status(400).send({ status: false, message: "your URL is wrong plese check endpoint" })
+router.all("/**", (req, res)=>{
+    return res.status(400).send({status:false, message:"your URL is wrong plese check endpoint"})
 })
 
 module.exports = router
