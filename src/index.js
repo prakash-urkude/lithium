@@ -5,8 +5,10 @@ const express = require("express")
 const route = require("./routes/route")
 const { default: mongoose } = require("mongoose")
 const app = express();
+const multer = require("multer")
 
 app.use(express.json());
+app.use(multer().any())
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -23,6 +25,6 @@ app.use("/", route);
 
 //__________________________ Listen : Port ___________________________________________
 
-app.listen(process.env.PORT || 3000, function () {
-    console.log("express app running on port" + (process.env.PORT || 3000))
+app.listen(process.env.PORT || 3001, function () {
+    console.log("express app running on port" + (process.env.PORT || 3001))
 })
