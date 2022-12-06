@@ -13,7 +13,7 @@ let creatReview = async function (req, res) {
     const { reviewedBy, rating, reviewedAt } = data
 
     if (reviewedBy) {
-      if (!Validation.isValidName(reviewedBy)) return res.status(400).send("Please provide a valid name with surname")
+      if (!Validation.isValidName(reviewedBy)) return res.status(400).send({ status: false, message: "Please provide a valid name with surname" })
     }
 
     if (!rating) return res.status(400).send("Please provide a reating for book")
@@ -27,7 +27,7 @@ let creatReview = async function (req, res) {
     if (!bookCheck) return res.status(404).send({ status: false, message: "book not found" })
     if (bookCheck.isDeleted) return res.status(400).send({ status: false, message: " book already deleted" })
 
-    if(!reviewedAt) return res.status(400).send({ status: false, message: "Please enter reviewedAt" })
+    if (!reviewedAt) return res.status(400).send({ status: false, message: "Please enter reviewedAt" })
     if (!Validation.IsValidDate(reviewedAt)) return res.status(400).send({ status: false, message: "please inter valid reviewedAt in format: YYYY-MM-DD" })
     data.bookId = bookId;
 

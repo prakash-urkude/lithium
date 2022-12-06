@@ -173,7 +173,7 @@ const deleteBook = async (req, res) => {
             await reviewModel.updateMany({ bookId: delatedbookId._id }, { $set: { isDeleted: true } });
             return res.status(200).send({ status: true, msg: "Book is deleated successfuly with its reviews", data: delatedbookId })
         } else {
-            return res.status(404).send({ status: false, msg: "No Book found for this id"  })
+            return res.status(404).send({ status: false, msg: "No Book found for this id" })
         }
     } catch (error) {
         return res.status(500).send({ status: false, msg: error.message });
@@ -183,3 +183,5 @@ const deleteBook = async (req, res) => {
 
 
 module.exports = { createBook, getBooks, updateBooks, deleteBook, getBookbyParam }
+
+
